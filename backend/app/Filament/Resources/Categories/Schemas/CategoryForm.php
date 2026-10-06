@@ -19,6 +19,7 @@ class CategoryForm
 
                 FileUpload::make('image')
                     ->image()
+                    ->disk('public')
                     ->directory('categories'),
 
                 Toggle::make('status')

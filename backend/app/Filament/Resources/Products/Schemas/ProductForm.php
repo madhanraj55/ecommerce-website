@@ -25,6 +25,7 @@ class ProductForm
 
                 FileUpload::make('image')
                     ->image()
+                    ->disk('public')
                     ->directory('products'),
 
                 TextInput::make('original_price')

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import api from "./api";
 
 function App() {
@@ -7,6 +7,30 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [search, setSearch] = useState("");
   const [quantities, setQuantities] = useState({});
+  const holdTimerRef = useRef(null);
+
+  const handleBackspaceDown = () => {
+    holdTimerRef.current = setTimeout(() => {
+      setSearch("");
+      holdTimerRef.current = null;
+    }, 500);
+  };
+
+  const handleBackspaceUp = () => {
+    if (holdTimerRef.current) {
+      clearTimeout(holdTimerRef.current);
+      holdTimerRef.current = null;
+      setSearch((prev) => prev.slice(0, -1));
+    }
+  };
+
+  const handleBackspaceLeave = () => {
+    if (holdTimerRef.current) {
+      clearTimeout(holdTimerRef.current);
+      holdTimerRef.current = null;
+    }
+  };
+
   useEffect(() => {
     api.get("/products")
       .then((response) => {
@@ -44,27 +68,27 @@ function App() {
         <div className="top-bar-container">
           <div className="top-bar">
             <div className="top-bar-left">
-              <span>24*7 Available 💬 (+91) 8925087991</span>
+              <a href="mailto:2001madhanraj@gmail.com"> ✉ 2001madhanraj@gmail.com </a>
             </div>
             <div className="top-bar-right">
-              <span>📱 +91 89250 87991</span>
+              <a href="tel:+919677676898"> ☎ +919677676898</a>
             </div>
           </div>
         </div>
         <div className="main-header">
           <div className="logo">
             <div className="logo-placeholder">
-              <span className="logo-s">S</span>
+              <span className="logo-s">M</span>
               <div className="logo-text">
-                <span className="logo-brand">saravana's</span>
+                <span className="logo-brand">Madhan</span>
                 <span className="logo-crackers">CRACKERS</span>
               </div>
             </div>
           </div>
           <nav className="nav-links">
             <a href="#" className="active">Home</a>
-            <a href="#">About Us</a>
-            <a href="#">Pricelist</a>
+            <a href="#">Collections</a>
+            <a href="#">Safety Tips</a>
             <a href="#">Contact us</a>
           </nav>
           <div className="header-actions">
@@ -79,6 +103,19 @@ function App() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+        {search && (
+          <button
+            className="backspace-btn"
+            onMouseDown={handleBackspaceDown}
+            onMouseUp={handleBackspaceUp}
+            onMouseLeave={handleBackspaceLeave}
+            onTouchStart={handleBackspaceDown}
+            onTouchEnd={handleBackspaceUp}
+            title="Click to delete 1 letter, hold to clear all"
+          >
+            ⌫
+          </button>
+        )}
       </div>
       <div className="categories">
         {categories.map((category) => (
@@ -187,6 +224,18 @@ function App() {
             ))}
         </div>
       </main>
+
+      <a
+        href="https://wa.me/919677676898"
+        className="whatsapp-float"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+          alt="WhatsApp"
+        />
+      </a>
     </div>
   );
 }
