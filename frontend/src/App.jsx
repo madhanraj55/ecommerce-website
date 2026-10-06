@@ -9,7 +9,14 @@ function App() {
   const [quantities, setQuantities] = useState({});
   const [currentPage, setCurrentPage] = useState("home");
   const [cart, setCart] = useState([]);
+  const [addingProduct, setAddingProduct] = useState(null);
+  const [toast, setToast] = useState(null);
   const holdTimerRef = useRef(null);
+
+  const showToast = (message) => {
+    setToast(message);
+    setTimeout(() => setToast(null), 3000);
+  };
 
   const handleAddToCart = (product) => {
     const qtyToAdd = quantities[product.id] || 1;
@@ -25,6 +32,8 @@ function App() {
       return [...prevCart, { product, quantity: qtyToAdd }];
     });
     setQuantities((prev) => ({ ...prev, [product.id]: 1 }));
+    setAddingProduct(product.id);
+    setTimeout(() => setAddingProduct(null), 800);
   };
 
   const updateCartQuantity = (productId, delta) => {
@@ -286,8 +295,11 @@ function App() {
                     </p>
                   </div>
 
-                  <button onClick={() => handleAddToCart(product)}>
-                    Add to Cart
+                  <button 
+                    className={`add-to-cart-btn ${addingProduct === product.id ? 'added' : ''}`}
+                    onClick={() => handleAddToCart(product)}
+                  >
+                    {addingProduct === product.id ? 'Added! ✓' : 'Add to Cart'}
                   </button>
                 </div>
 
@@ -339,10 +351,75 @@ function App() {
                   <span>Total Bill:</span>
                   <span>₹{cartTotal.toFixed(2)}</span>
                 </div>
-                <button className="continue-btn" onClick={() => alert("Proceeding to checkout...")}>Continue</button>
+                <button className="continue-btn" onClick={() => navigateTo('checkout')}>Continue</button>
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {currentPage === 'checkout' && (
+        <div className="checkout-page">
+          <h2>Checkout Details</h2>
+          <form className="checkout-form" onSubmit={async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const orderData = {
+              customer_name: formData.get('customer_name'),
+              phone: formData.get('phone'),
+              email: formData.get('email'),
+              address: formData.get('address'),
+              cart: cart,
+              total_amount: cartTotal
+            };
+
+            try {
+              const response = await fetch('http://127.0.0.1:8000/api/orders', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+              });
+
+              if (response.ok) {
+                showToast("Order Submitted Successfully! ✅");
+                setCart([]);
+                navigateTo('home');
+              } else {
+                showToast("Failed to submit order. Please try again. ❌");
+              }
+            } catch (error) {
+              console.error(error);
+              showToast("An error occurred while submitting the order. ❌");
+            }
+          }}>
+            <div className="form-group">
+              <label>Full Name</label>
+              <input type="text" name="customer_name" required placeholder="Enter your full name" />
+            </div>
+            <div className="form-group">
+              <label>Phone Number</label>
+              <input type="tel" name="phone" required placeholder="Enter your phone number" />
+            </div>
+            <div className="form-group">
+              <label>Email (Optional)</label>
+              <input type="email" name="email" placeholder="Enter your email" />
+            </div>
+            <div className="form-group">
+              <label>Delivery Address</label>
+              <textarea name="address" required rows="4" placeholder="Enter your full delivery address"></textarea>
+            </div>
+            
+            <div className="checkout-summary">
+              <h3>Order Total: ₹{cartTotal.toFixed(2)}</h3>
+              <p>{cart.reduce((sum, item) => sum + item.quantity, 0)} Items</p>
+            </div>
+            
+            <button type="submit" className="submit-order-btn">Submit Order</button>
+          </form>
         </div>
       )}
 
@@ -456,6 +533,11 @@ function App() {
           <p>Copyright © 2026, Madhan Crackers. All rights reserved</p>
         </div>
       </footer>
+      {toast && (
+        <div className="toast-notification">
+          {toast}
+        </div>
+      )}
     </div>
   );
 }

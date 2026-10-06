@@ -877,3 +877,109 @@ body {
     border-top: 1px solid #f1f5f9;
   }
 }
+
+/* Add to Cart Button Animation */
+.add-to-cart-btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.add-to-cart-btn.added {
+  background-color: #16a34a !important;
+  transform: scale(0.95);
+  box-shadow: 0 0 10px rgba(22, 163, 74, 0.5);
+}
+
+/* Checkout Page */
+.checkout-page {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+.checkout-page h2 {
+  text-align: center;
+  font-size: 32px;
+  color: #0f172a;
+  margin-bottom: 30px;
+}
+.checkout-form {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #334155;
+  font-size: 14px;
+}
+.form-group input, .form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.form-group input:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+.checkout-summary {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+}
+.checkout-summary h3 {
+  margin: 0 0 4px 0;
+  color: #0f172a;
+  font-size: 20px;
+}
+.checkout-summary p {
+  margin: 0;
+  color: #475569;
+}
+.submit-order-btn {
+  width: 100%;
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.submit-order-btn:hover {
+  background: #15803d;
+}
+
+/* Toast Notification */
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #16a34a;
+  color: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  font-weight: 600;
+  font-size: 16px;
+  animation: slideIn 0.3s ease-out forwards;
+}
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
