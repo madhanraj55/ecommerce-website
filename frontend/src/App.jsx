@@ -157,9 +157,9 @@ function App() {
             <a href="#" className={currentPage === 'home' ? 'active' : ''} onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>Home</a>
             <a href="#" onClick={(e) => { e.preventDefault(); navigateToCollections(); }}>Collections</a>
             <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>Price List</a>
-            <a href="#" className={currentPage === 'safety' ? 'active' : ''} onClick={(e) => { e.preventDefault(); navigateTo('safety'); }}>Safety Tips</a>
+            <a href="#" className={`safety-tips-link ${currentPage === 'safety' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); navigateTo('safety'); }}>Safety Tips</a>
             <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>Contact Us</a>  
-            <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>About Us</a>
+            <a href="#" className="about-us-link" onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>About Us</a>
             <a href="#" className={`cart-icon-link ${currentPage === 'cart' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); navigateTo('cart'); }}>
               🛒
               {cart.length > 0 && <span className="cart-badge">{cart.reduce((sum, item) => sum + item.quantity, 0)}</span>}

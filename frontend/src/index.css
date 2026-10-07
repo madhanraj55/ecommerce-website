@@ -1058,6 +1058,11 @@ body {
     font-size: 15px;
   }
 
+  .about-us-link,
+  .safety-tips-link {
+    display: none;
+  }
+
   .categories-container {
     padding: 0 15px;
   }
@@ -1085,7 +1090,7 @@ body {
 
 @media (max-width: 480px) {
   .nav-links {
-    gap: 10px;
+    gap: 23px;
   }
 
   .nav-links a {
