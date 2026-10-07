@@ -166,7 +166,7 @@ function App() {
               Price List
             </a>
 
-            <a href="#" className={currentPage === 'safety' ? 'active' : ''} onClick={(e) => { e.preventDefault(); navigateTo('safety'); }}>
+            <a href="#" className={`hide-on-mobile ${currentPage === 'safety' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); navigateTo('safety'); }}>
               Safety Tips
             </a>
 
@@ -174,7 +174,7 @@ function App() {
               Contact Us
             </a>
 
-            <a href="#" className="nav-two-line" onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>
+            <a href="#" className="nav-two-line hide-on-mobile" onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>
               About Us
             </a>
 

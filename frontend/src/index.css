@@ -1072,8 +1072,7 @@ body {
     font-size: 15px;
   }
 
-  .about-us-link,
-  .safety-tips-link {
+  .hide-on-mobile {
     display: none;
   }
 
