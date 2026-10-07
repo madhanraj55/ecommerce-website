@@ -59,7 +59,7 @@ function App() {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  
+
   const navigateToCollections = () => {
     setCurrentPage('home');
     setTimeout(() => {
@@ -154,160 +154,182 @@ function App() {
             </div>
           </div>
           <nav className="nav-links">
-            <a href="#" className={currentPage === 'home' ? 'active' : ''} onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>Home</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); navigateToCollections(); }}>Collections</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>Price List</a>
-            <a href="#" className={currentPage === 'safety' ? 'active' : ''} onClick={(e) => { e.preventDefault(); navigateTo('safety'); }}>Safety Tips</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>Contact Us</a>  
-            <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>About Us</a>
+            <a href="#" className={currentPage === 'home' ? 'active' : ''} onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>
+              Home
+            </a>
+
+            <a href="#" onClick={(e) => { e.preventDefault(); navigateToCollections(); }}>
+              Collections
+            </a>
+
+            <a href="#" className="nav-two-line" onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>
+              Price List
+            </a>
+
+            <a href="#" className={currentPage === 'safety' ? 'active' : ''} onClick={(e) => { e.preventDefault(); navigateTo('safety'); }}>
+              Safety Tips
+            </a>
+
+            <a href="#" className="nav-two-line" onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>
+              Contact Us
+            </a>
+
+            <a href="#" className="nav-two-line" onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>
+              About Us
+            </a>
+
             <a href="#" className={`cart-icon-link ${currentPage === 'cart' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); navigateTo('cart'); }}>
               🛒
-              {cart.length > 0 && <span className="cart-badge">{cart.reduce((sum, item) => sum + item.quantity, 0)}</span>}
+              {cart.length > 0 && (
+                <span className="cart-badge">
+                  {cart.reduce((sum, item) => sum + item.quantity, 0)}
+                </span>
+              )}
             </a>
           </nav>
         </div>
       </header>
       {currentPage === 'home' && (
         <>
-      <div className="search-box">
-        <input
-          type="text"
-          placeholder="Search products..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        {search && (
-          <button
-            className="backspace-btn"
-            onMouseDown={handleBackspaceDown}
-            onMouseUp={handleBackspaceUp}
-            onMouseLeave={handleBackspaceLeave}
-            onTouchStart={handleBackspaceDown}
-            onTouchEnd={handleBackspaceUp}
-            title="Click to delete 1 letter, hold to clear all"
-          >
-            ⌫
-          </button>
-        )}
-      </div>
-      <h1 className="collection-title">Collections</h1>
-      <div className="categories-container">
-        <button className="scroll-btn left" onClick={() => scrollCategories('left')}>‹</button>
+          <div className="search-box">
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            {search && (
+              <button
+                className="backspace-btn"
+                onMouseDown={handleBackspaceDown}
+                onMouseUp={handleBackspaceUp}
+                onMouseLeave={handleBackspaceLeave}
+                onTouchStart={handleBackspaceDown}
+                onTouchEnd={handleBackspaceUp}
+                title="Click to delete 1 letter, hold to clear all"
+              >
+                ⌫
+              </button>
+            )}
+          </div>
+          <h1 className="collection-title">Collections</h1>
+          <div className="categories-container">
+            <button className="scroll-btn left" onClick={() => scrollCategories('left')}>‹</button>
 
-        <div className="categories" ref={categoriesRef}>
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              className="category-card"
-              onClick={() => setSelectedCategory(category.id)}
-            >
-              {category.image ? (
-                <img
-                  src={`http://127.0.0.1:8000/storage/${category.image}`}
-                  alt={category.name}
-                />
-              ) : (
-                <div className="category-no-image">
-                  No Image
-                </div>
-              )}
+            <div className="categories" ref={categoriesRef}>
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  className="category-card"
+                  onClick={() => setSelectedCategory(category.id)}
+                >
+                  {category.image ? (
+                    <img
+                      src={`http://127.0.0.1:8000/storage/${category.image}`}
+                      alt={category.name}
+                    />
+                  ) : (
+                    <div className="category-no-image">
+                      No Image
+                    </div>
+                  )}
 
-              <span>{category.name}</span>
-            </button>
-          ))}
-        </div>
+                  <span>{category.name}</span>
+                </button>
+              ))}
+            </div>
 
-        <button className="scroll-btn right" onClick={() => scrollCategories('right')}>›</button>
-      </div>
-      <main className="products-section">
-        <h2>Products</h2>
+            <button className="scroll-btn right" onClick={() => scrollCategories('right')}>›</button>
+          </div>
+          <main className="products-section">
+            <h2>Products</h2>
 
-        <div className="product-grid">
-          {products
-            .filter((product) => {
-              const matchesSearch =
-                product.name.toLowerCase().includes(search.toLowerCase()) ||
-                product.category?.name
-                  .toLowerCase()
-                  .includes(search.toLowerCase());
+            <div className="product-grid">
+              {products
+                .filter((product) => {
+                  const matchesSearch =
+                    product.name.toLowerCase().includes(search.toLowerCase()) ||
+                    product.category?.name
+                      .toLowerCase()
+                      .includes(search.toLowerCase());
 
-              const matchesCategory =
-                selectedCategory === null ||
-                product.category_id === selectedCategory;
+                  const matchesCategory =
+                    selectedCategory === null ||
+                    product.category_id === selectedCategory;
 
-              return matchesSearch && matchesCategory;
-            })
-            .map((product) => (
-              <div className="product-card" key={product.id}>
+                  return matchesSearch && matchesCategory;
+                })
+                .map((product) => (
+                  <div className="product-card" key={product.id}>
 
-                {product.image ? (
-                  <img
-                    src={`http://127.0.0.1:8000/storage/${product.image}`}
-                    alt={product.name}
-                  />
-                ) : (
-                  <div className="no-image">
-                    No Image
-                  </div>
-                )}
+                    {product.image ? (
+                      <img
+                        src={`http://127.0.0.1:8000/storage/${product.image}`}
+                        alt={product.name}
+                      />
+                    ) : (
+                      <div className="no-image">
+                        No Image
+                      </div>
+                    )}
 
-                <div className="product-info">
-                  <h3>{product.name}</h3>
+                    <div className="product-info">
+                      <h3>{product.name}</h3>
 
-                  <p className="category">
-                    {product.category?.name}
-                  </p>
+                      <p className="category">
+                        {product.category?.name}
+                      </p>
 
-                  <div className="price">
-                    <span className="original">
-                      ₹{product.original_price}
-                    </span>
+                      <div className="price">
+                        <span className="original">
+                          ₹{product.original_price}
+                        </span>
 
-                    <span className="selling">
-                      ₹{product.selling_price}
-                    </span>
-                  </div>
-                  <div className="quantity-total-row">
-                    <div className="quantity-control">
+                        <span className="selling">
+                          ₹{product.selling_price}
+                        </span>
+                      </div>
+                      <div className="quantity-total-row">
+                        <div className="quantity-control">
+                          <button
+                            onClick={() => decreaseQuantity(product.id)}
+                          >
+                            −
+                          </button>
+
+                          <span>
+                            {quantities[product.id] || 1}
+                          </span>
+
+                          <button
+                            onClick={() => increaseQuantity(product.id)}
+                          >
+                            +
+                          </button>
+                        </div>
+
+                        <p className="product-total">
+                          Total: ₹
+                          {(
+                            Number(product.selling_price) *
+                            (quantities[product.id] || 1)
+                          ).toFixed(2)}
+                        </p>
+                      </div>
+
                       <button
-                        onClick={() => decreaseQuantity(product.id)}
+                        className={`add-to-cart-btn ${addingProduct === product.id ? 'added' : ''}`}
+                        onClick={() => handleAddToCart(product)}
                       >
-                        −
-                      </button>
-
-                      <span>
-                        {quantities[product.id] || 1}
-                      </span>
-
-                      <button
-                        onClick={() => increaseQuantity(product.id)}
-                      >
-                        +
+                        {addingProduct === product.id ? 'Added! ✓' : 'Add to Cart'}
                       </button>
                     </div>
 
-                    <p className="product-total">
-                      Total: ₹
-                      {(
-                        Number(product.selling_price) *
-                        (quantities[product.id] || 1)
-                      ).toFixed(2)}
-                    </p>
                   </div>
-
-                  <button 
-                    className={`add-to-cart-btn ${addingProduct === product.id ? 'added' : ''}`}
-                    onClick={() => handleAddToCart(product)}
-                  >
-                    {addingProduct === product.id ? 'Added! ✓' : 'Add to Cart'}
-                  </button>
-                </div>
-
-              </div>
-            ))}
-        </div>
-      </main>
-      </>
+                ))}
+            </div>
+          </main>
+        </>
       )}
 
       {currentPage === 'cart' && (
@@ -363,7 +385,7 @@ function App() {
           <h2>Checkout Details</h2>
           <form className="checkout-form" onSubmit={async (e) => {
             e.preventDefault();
-            
+
             const formData = new FormData(e.target);
             const orderData = {
               customer_name: formData.get('customer_name'),
@@ -412,12 +434,12 @@ function App() {
               <label>Delivery Address</label>
               <textarea name="address" required rows="4" placeholder="Enter your full delivery address"></textarea>
             </div>
-            
+
             <div className="checkout-summary">
               <h3>Order Total: ₹{cartTotal.toFixed(2)}</h3>
               <p>{cart.reduce((sum, item) => sum + item.quantity, 0)} Items</p>
             </div>
-            
+
             <button type="submit" className="submit-order-btn">Submit Order</button>
           </form>
         </div>
@@ -427,7 +449,7 @@ function App() {
         <div className="safety-page">
           <h2>Safety Tips</h2>
           <p className="safety-intro">There are certain Do's & Don’ts to follow while purchasing, bursting and storing crackers. Thus, it is very important to follow the precautions while bursting crackers. A little negligence, ignorance and carelessness can cause a fatal injury.</p>
-          
+
           <div className="safety-grid">
             <div className="safety-dos">
               <h3>✅ Do's</h3>
